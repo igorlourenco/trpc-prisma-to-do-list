@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
-import { Hero } from "../components/Hero";
+import { Login } from "../components/Login";
 
 const Index = () => {
   return (
     <Box>
-      <Hero />
+      <Login />
     </Box>
   );
 };
