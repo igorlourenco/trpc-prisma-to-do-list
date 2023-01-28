@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 export const Login = () => {
   const { data: session } = useSession();
   const router = useRouter();
+
+  console.log(session?.user);
+
   if (session) {
     return (
       <>
