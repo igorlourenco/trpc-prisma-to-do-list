@@ -18,6 +18,18 @@ export const authOptions = {
       console.log(url, baseUrl);
       return "/dashboard";
     },
+    async session({ session, token }: any) {
+      if (session?.user && session?.id) {
+        session.user.id = session.id;
+      }
+      return session;
+    },
+    async jwt({ user, token }: any) {
+      if (user) {
+        token.uid = user.id;
+      }
+      return token;
+    },
   },
 };
 

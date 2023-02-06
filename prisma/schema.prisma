@@ -43,6 +43,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    Task          Task[]
 }
 
 model VerificationToken {
@@ -51,4 +52,14 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Task {
+    id        String   @id @default(uuid())
+    text      String
+    completed Boolean  @default(value: false)
+    createdAt DateTime @unique @default(now())
+    updatedAt DateTime @unique @default(now())
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String
 }
