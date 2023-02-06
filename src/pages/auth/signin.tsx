@@ -1,8 +1,8 @@
 import { Button, Flex, Stack } from "@chakra-ui/react";
-import { Provider } from "next-auth/providers";
+import { GetServerSidePropsContext } from "next";
 import { getProviders, signIn } from "next-auth/react";
 
-const SignIn = ({ providers }) => {
+const SignIn = ({ providers }: any) => {
   return (
     <Flex w="100vw" minH="100vh" alignItems="center" justifyContent="center">
       <Stack
@@ -14,7 +14,7 @@ const SignIn = ({ providers }) => {
         w={["100%", "60%", "40%", "25%"]}
       >
         <Stack alignItems="center">
-          {Object.values(providers).map((provider: Provider) => (
+          {Object.values(providers).map((provider: any) => (
             <Button
               key={provider.name}
               width="100%"
@@ -29,7 +29,7 @@ const SignIn = ({ providers }) => {
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const providers = await getProviders();
 
   return {
