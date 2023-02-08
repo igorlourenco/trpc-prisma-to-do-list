@@ -23,8 +23,8 @@ export const updateTaskSchema = z.object({
 });
 
 export const filterQuery = z.object({
-  limit: z.number().default(1),
-  page: z.number().default(10),
+  limit: z.number().default(1).nullable(),
+  page: z.number().default(10).nullable(),
   userId: z.string(),
 });
 

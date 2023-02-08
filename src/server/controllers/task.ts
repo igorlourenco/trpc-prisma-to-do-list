@@ -77,11 +77,11 @@ export const findTaskController = async ({
   paramsInput: ParamsInput;
 }) => {
   try {
-    const note = await prisma.task.findFirst({
+    const task = await prisma.task.findFirst({
       where: { id: paramsInput.taskId },
     });
 
-    if (!note) {
+    if (!task) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Task with that ID not found",
@@ -90,7 +90,7 @@ export const findTaskController = async ({
 
     return {
       status: "success",
-      note,
+      task,
     };
   } catch (error) {
     throw error;
@@ -107,7 +107,7 @@ export const findAllTasksController = async ({
     const limit = filterQuery.limit || 10;
     const skip = (page - 1) * limit;
 
-    const notes = await prisma.task.findMany({
+    const tasks = await prisma.task.findMany({
       skip,
       take: limit,
       where: {
@@ -117,8 +117,8 @@ export const findAllTasksController = async ({
 
     return {
       status: "success",
-      results: notes.length,
-      notes,
+      results: tasks.length,
+      tasks,
     };
   } catch (error) {
     throw error;

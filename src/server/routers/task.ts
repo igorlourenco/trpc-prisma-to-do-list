@@ -1,24 +1,24 @@
 import { z } from "zod";
 import {
-  createTaskController,
-  deleteTaskController,
-  findAllTasksController,
-  findTaskController,
-  updateTaskController,
+	createTaskController,
+	deleteTaskController,
+	findAllTasksController,
+	findTaskController,
+	updateTaskController
 } from "../controllers/task";
 import { procedure, router } from "../trpc";
 
-export const helloRouter = router({
+export const taskRouter = router({
   getTasksByUserId: procedure
     .input(
       z.object({
         userId: z.string(),
-        limit: z.number(),
-        page: z.number(),
+        limit: z.number().default(10).nullable(),
+        page: z.number().default(1).nullable(),
       })
     )
     .query(({ input }) => {
-      findAllTasksController({ filterQuery: input });
+      return findAllTasksController({ filterQuery: input });
     }),
   getTask: procedure
     .input(
@@ -27,7 +27,7 @@ export const helloRouter = router({
       })
     )
     .query(({ input }) => {
-      findTaskController({ paramsInput: input });
+      return findTaskController({ paramsInput: input });
     }),
   createTask: procedure
     .input(
@@ -37,7 +37,7 @@ export const helloRouter = router({
       })
     )
     .mutation(({ input }) => {
-      createTaskController({ input });
+      return createTaskController({ input });
     }),
   updateTask: procedure
     .input(
@@ -49,7 +49,7 @@ export const helloRouter = router({
     )
     .mutation(({ input }) => {
       const { taskId, ...rest } = input;
-      updateTaskController({
+      return updateTaskController({
         paramsInput: { taskId },
         input: { ...rest },
       });
@@ -57,5 +57,7 @@ export const helloRouter = router({
 
   deleteTask: procedure
     .input(z.object({ taskId: z.string() }))
-    .mutation(({ input }) => deleteTaskController({ paramsInput: input })),
+    .mutation(({ input }) => {
+      return deleteTaskController({ paramsInput: input });
+    }),
 });
