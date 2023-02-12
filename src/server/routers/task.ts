@@ -1,63 +1,36 @@
-import { z } from "zod";
 import {
-	createTaskController,
-	deleteTaskController,
-	findAllTasksController,
-	findTaskController,
-	updateTaskController
+  createTaskController,
+  deleteTaskController,
+  findAllTasksController,
+  findTaskController,
+  updateTaskController,
 } from "../controllers/task";
+import {
+  createTaskSchema,
+  filterQuery,
+  params,
+  updateTaskSchema,
+} from "../schema/task";
 import { procedure, router } from "../trpc";
 
 export const taskRouter = router({
-  getTasksByUserId: procedure
-    .input(
-      z.object({
-        userId: z.string(),
-        limit: z.number().default(10).nullable(),
-        page: z.number().default(1).nullable(),
-      })
-    )
-    .query(({ input }) => {
-      return findAllTasksController({ filterQuery: input });
-    }),
-  getTask: procedure
-    .input(
-      z.object({
-        taskId: z.string(),
-      })
-    )
-    .query(({ input }) => {
-      return findTaskController({ paramsInput: input });
-    }),
-  createTask: procedure
-    .input(
-      z.object({
-        userId: z.string(),
-        text: z.string(),
-      })
-    )
-    .mutation(({ input }) => {
-      return createTaskController({ input });
-    }),
-  updateTask: procedure
-    .input(
-      z.object({
-        userId: z.string(),
-        text: z.string(),
-        taskId: z.string(),
-      })
-    )
-    .mutation(({ input }) => {
-      const { taskId, ...rest } = input;
-      return updateTaskController({
-        paramsInput: { taskId },
-        input: { ...rest },
-      });
-    }),
+  getTasksByUserId: procedure.input(filterQuery).query(({ input }) => {
+    return findAllTasksController({ filterQuery: input });
+  }),
+  getTask: procedure.input(params).query(({ input }) => {
+    return findTaskController({ paramsInput: input });
+  }),
+  createTask: procedure.input(createTaskSchema).mutation(({ input }) => {
+    return createTaskController({ input });
+  }),
+  updateTask: procedure.input(updateTaskSchema).mutation(({ input }) => {
+    return updateTaskController({
+      paramsInput: { taskId: input.params.taskId },
+      input: input.body,
+    });
+  }),
 
-  deleteTask: procedure
-    .input(z.object({ taskId: z.string() }))
-    .mutation(({ input }) => {
-      return deleteTaskController({ paramsInput: input });
-    }),
+  deleteTask: procedure.input(params).mutation(({ input }) => {
+    return deleteTaskController({ paramsInput: input });
+  }),
 });

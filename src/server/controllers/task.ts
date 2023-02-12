@@ -1,5 +1,6 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, TaskStatus } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import { getDate } from "../../utils/helpers";
 import {
   CreateTaskInput,
   FilterQueryInput,
@@ -17,7 +18,9 @@ export const createTaskController = async ({
   try {
     const task = await prisma.task.create({
       data: {
-        text: input.text,
+        title: input.title,
+        description: input.description,
+        dueDate: input.dueDate,
         userId: input.userId,
       },
     });
@@ -51,7 +54,11 @@ export const updateTaskController = async ({
   try {
     const updatedNote = await prisma.task.update({
       where: { id: paramsInput.taskId },
-      data: input,
+      data: {
+        updatedAt: new Date(),
+        status: TaskStatus[input.status as TaskStatus],
+        ...input,
+      },
     });
 
     return {
@@ -103,15 +110,15 @@ export const findAllTasksController = async ({
   filterQuery: FilterQueryInput;
 }) => {
   try {
-    const page = filterQuery.page || 1;
-    const limit = filterQuery.limit || 10;
-    const skip = (page - 1) * limit;
-
     const tasks = await prisma.task.findMany({
-      skip,
-      take: limit,
       where: {
         userId: filterQuery.userId,
+        dueDate: {
+          equals: filterQuery.dueDate || getDate(new Date()),
+        },
+      },
+      orderBy: {
+        updatedAt: "desc",
       },
     });
 

@@ -1,9 +1,18 @@
 import { z } from "zod";
+import { getDate } from "../../utils/helpers";
 
 export const createTaskSchema = z.object({
-  text: z.string({
-    required_error: "Text is required",
+  title: z.string({
+    required_error: "Title is required",
   }),
+  description: z.string({
+    required_error: "Description is required",
+  }),
+  dueDate: z
+    .string({
+      required_error: "Due date is required",
+    })
+    .transform((str) => new Date(str).toISOString()),
   userId: z.string({
     required_error: "User ID is required",
   }),
@@ -17,15 +26,21 @@ export const updateTaskSchema = z.object({
   params,
   body: z
     .object({
-      text: z.string(),
+      title: z.string(),
+      description: z.string(),
+      dueDate: z.date(),
+      status: z.string(),
     })
     .partial(),
 });
 
 export const filterQuery = z.object({
-  limit: z.number().default(1).nullable(),
-  page: z.number().default(10).nullable(),
   userId: z.string(),
+  dueDate: z
+    .string()
+    .transform((str) => new Date(str).toISOString())
+    .nullable()
+    .default(getDate()),
 });
 
 export type ParamsInput = z.TypeOf<typeof params>;
