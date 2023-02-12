@@ -35,9 +35,9 @@ const Dashboard = () => {
   });
 
   const { mutate: createTask, isLoading } = trpc.task.createTask.useMutation({
-    async onSuccess(data: any) {
+    async onSuccess() {
       utils.task.getTasksByUserId.invalidate({
-        userId: (session?.user?.id as string) || "",
+        userId: (session?.user?.id as string) || "", // query params
       });
     },
   });
