@@ -29,7 +29,7 @@ export const updateTaskSchema = z.object({
       title: z.string(),
       description: z.string(),
       dueDate: z.date(),
-      status: z.string(),
+      status: z.enum(["TO_DO", "DOING", "DONE"]),
     })
     .partial(),
 });

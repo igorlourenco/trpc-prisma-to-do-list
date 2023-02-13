@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, TaskStatus } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { getDate } from "../../utils/helpers";
 import {
@@ -56,7 +56,6 @@ export const updateTaskController = async ({
       where: { id: paramsInput.taskId },
       data: {
         updatedAt: new Date(),
-        status: TaskStatus[input.status as TaskStatus],
         ...input,
       },
     });
