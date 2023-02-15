@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, Task } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { getDate } from "../../utils/helpers";
 import {
@@ -109,7 +109,7 @@ export const findAllTasksController = async ({
   filterQuery: FilterQueryInput;
 }) => {
   try {
-    const tasks = await prisma.task.findMany({
+    const tasks: Task[] = await prisma.task.findMany({
       where: {
         userId: filterQuery.userId,
         dueDate: {
