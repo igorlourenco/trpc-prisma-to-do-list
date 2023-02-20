@@ -16,7 +16,7 @@ const Dashboard = () => {
     <div className={clsx("flex flex-col items-center min-h-screen p-8")}>
       <NewTask />
 
-      <div>
+      <div className={clsx("w-2/3 flex flex-col gap-2 py-8")}>
         {tasksQuery?.tasks.map((task) => (
           <Task key={task.id} task={task as any as TaskType} />
         ))}
