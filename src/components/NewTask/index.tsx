@@ -1,4 +1,3 @@
-import { Badge, Button, Flex, Input, Stack, Textarea } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useMemo, useState } from "react";
@@ -6,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { TypeOf, z } from "zod";
 import { getDate } from "../../utils/helpers";
 import { trpc } from "../../utils/trpc";
+import { Input } from "../general/Input";
 
 const createTaskSchema = z.object({
   title: z.string().min(1).max(100),
@@ -55,8 +55,8 @@ export const NewTask = () => {
     });
   };
   return (
-    <Stack>
-      <Stack as="form" onSubmit={handleSubmit(onSubmit)}>
+    <div className="">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Input {...register("title")} placeholder="Title" />
 
         {errors.title && (
@@ -65,7 +65,7 @@ export const NewTask = () => {
           </p>
         )}
 
-        <Textarea {...register("description")} placeholder="Description" />
+        <textarea {...register("description")} placeholder="Description" />
 
         {errors.description && (
           <p className="text-xs italic text-red-500 mt-2">
@@ -73,27 +73,13 @@ export const NewTask = () => {
           </p>
         )}
 
-        <Flex gap={2}>
-          <Badge
-            cursor="pointer"
-            onClick={() => setDueDate(today)}
-            colorScheme={dueDate === today ? "green" : "gray"}
-          >
-            Today
-          </Badge>
-          <Badge
-            cursor="pointer"
-            onClick={() => setDueDate(tomorrow)}
-            colorScheme={dueDate === tomorrow ? "green" : "gray"}
-          >
-            Tomorrow
-          </Badge>
-        </Flex>
+        <div>
+          <span onClick={() => setDueDate(today)}>Today</span>
+          <span onClick={() => setDueDate(tomorrow)}>Tomorrow</span>
+        </div>
 
-        <Button type="submit" isLoading={isLoading}>
-          Send
-        </Button>
-      </Stack>
-    </Stack>
+        <button type="submit">Send</button>
+      </form>
+    </div>
   );
 };

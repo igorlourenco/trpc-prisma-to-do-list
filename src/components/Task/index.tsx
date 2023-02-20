@@ -1,4 +1,3 @@
-import { Flex, Text } from "@chakra-ui/react";
 import { Task as TaskType, TaskStatus } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { getNewStatus } from "../../utils/helpers";
@@ -31,21 +30,11 @@ export const Task = ({ task }: TaskInterface) => {
   };
 
   return (
-    <Flex
-      gap={4}
-      alignItems="center"
-      justifyContent="space-between"
-      key={task.id}
-    >
-      <Text
-        fontWeight="semibold"
-        color="gray.600"
-        cursor="pointer"
-        onClick={() => handleUpdateTask(task.id, task.status)}
-      >
+    <div>
+      <p onClick={() => handleUpdateTask(task.id, task.status)}>
         {task.status?.replace("_", " ")}
-      </Text>
-      <Flex>{task.title}</Flex>
-    </Flex>
+      </p>
+      <p>{task.title}</p>
+    </div>
   );
 };

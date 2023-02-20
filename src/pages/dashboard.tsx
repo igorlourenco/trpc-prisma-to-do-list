@@ -1,4 +1,3 @@
-import { Flex, Stack } from "@chakra-ui/react";
 import { Task as TaskType } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { NewTask } from "../components/NewTask";
@@ -13,20 +12,15 @@ const Dashboard = () => {
   });
 
   return (
-    <Flex
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      w="100vw"
-    >
+    <div>
       <NewTask />
 
-      <Stack gap={4} p={4}>
+      <div>
         {tasksQuery?.tasks.map((task) => (
           <Task key={task.id} task={task as any as TaskType} />
         ))}
-      </Stack>
-    </Flex>
+      </div>
+    </div>
   );
 };
 
