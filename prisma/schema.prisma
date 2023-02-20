@@ -63,7 +63,7 @@ enum TaskStatus {
 model Task {
     id          String     @id @default(uuid())
     title       String
-    description String
+    description String?
     status      TaskStatus @default(value: TO_DO)
     startedAt   DateTime?
     finishedAt  DateTime?

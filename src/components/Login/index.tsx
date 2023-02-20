@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -8,13 +9,20 @@ export const Login = () => {
   if (session) {
     return (
       <div>
-        <button onClick={() => signOut()}>Sign out</button>
+        <button className={"p-2"} onClick={() => signOut()}>
+          Sign out
+        </button>
       </div>
     );
   }
   return (
     <>
-      <button onClick={() => router.push("/auth/signin")}>Sign in</button>
+      <button
+        className={clsx("p-2")}
+        onClick={() => router.push("/auth/signin")}
+      >
+        Sign in
+      </button>
     </>
   );
 };

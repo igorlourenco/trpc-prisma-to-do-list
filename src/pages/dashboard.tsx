@@ -1,4 +1,5 @@
 import { Task as TaskType } from "@prisma/client";
+import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import { NewTask } from "../components/NewTask";
 import { Task } from "../components/Task";
@@ -12,7 +13,7 @@ const Dashboard = () => {
   });
 
   return (
-    <div>
+    <div className={clsx("flex flex-col items-center min-h-screen p-8")}>
       <NewTask />
 
       <div>

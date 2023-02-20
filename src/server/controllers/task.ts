@@ -19,7 +19,6 @@ export const createTaskController = async ({
     const task = await prisma.task.create({
       data: {
         title: input.title,
-        description: input.description,
         dueDate: input.dueDate,
         userId: input.userId,
       },

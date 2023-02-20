@@ -5,9 +5,6 @@ export const createTaskSchema = z.object({
   title: z.string({
     required_error: "Title is required",
   }),
-  description: z.string({
-    required_error: "Description is required",
-  }),
   dueDate: z
     .string({
       required_error: "Due date is required",
@@ -27,7 +24,6 @@ export const updateTaskSchema = z.object({
   body: z
     .object({
       title: z.string(),
-      description: z.string(),
       dueDate: z.date(),
       status: z.enum(["TO_DO", "DOING", "DONE"]),
     })
